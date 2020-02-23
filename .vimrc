@@ -1,14 +1,14 @@
 " machine-specific options
 "-------------------------------------------------------------------------------
 
+" options for gvim on win10
 if hostname() == 'LOGANF-5820'
-    "set shell=powershell
-    set shell=cmd
     set shellcmdflag-=command
     let g:netrw_browsex_viewer="powershell.exe -command start-process iexplore.exe"
     set directory^=$HOME/vimfiles/tmp//
 
-    " Python configs needed to solve strange gvim crash
+    " configuration to prevent strange gvim python crash
+    set shell=cmd
     let &pythonthreedll = 'C:\Users\lfrederick\.conda\envs\vim_32\python37.dll'
     let $PYTHONPATH = 'C:\Users\lfrederick\.conda\envs\vim_32'
     let $PYTHONHOME = 'C:\Users\lfrederick\.conda\envs\vim_32'
@@ -103,7 +103,7 @@ nnoremap Q gqap
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
-" obnoxious crosshairs only in normal mode
+" obnoxious crosshairs, but only in normal mode
 autocmd! InsertEnter * setlocal nocursorline nocursorcolumn
 autocmd! InsertLeave * setlocal cursorline cursorcolumn
 
@@ -120,6 +120,8 @@ set foldtext=getline(v:foldstart+1)
 syntax on
 set background=dark
 set cursorline cursorcolumn
+
+" add a blue wall from column 80+
 let &colorcolumn=join(range(80,999),",")
 
 hi Folded                        guibg=#363636     guifg=Black
@@ -130,8 +132,8 @@ hi Tabline                       guibg=DarkMagenta guifg=Yellow
 hi TablineFill                   guibg=DarkMagenta guifg=Yellow
 hi TablineSel                    guibg=#00FF00     guifg=Blue
 hi Linenr       gui=bold         guibg=#00FF00     guifg=Blue
-hi Cursorline   gui=bold         guibg=#555555
-hi Cursorcolumn gui=bold         guibg=#555555
+hi Cursorline   gui=bold         guibg=Magenta
+hi Cursorcolumn gui=bold         guibg=Magenta
 hi Visual                        guibg=#FF00FF     guifg=White
 hi Cursor       gui=bold         guibg=White       guifg=Red
 hi Cursorlinenr gui=bold         guibg=White       guifg=Red
