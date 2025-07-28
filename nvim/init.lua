@@ -55,6 +55,13 @@ require("lazy").setup({
       end,
       dependencies = { 'vimwiki/vimwiki' }
   },
+  {
+      dir = "~/.config/nvim/lua/provisioning",
+      name = "provisioning_plugin",
+      config = function()
+          require("provisioning").setup({})
+      end
+  }
 })
 
 
@@ -122,5 +129,82 @@ end
 
 
 vim.g.mapleader = '\\'
-vim.api.nvim_set_keymap('n', '<Leader><Leader>', 'nohl', { noremap = true, silent = true })
 vim.cmd([[colorscheme retrobox]])
+
+vim.opt.statusline = 'Editing: %f %y %M'
+vim.opt.incsearch = true
+vim.opt.hlsearch = true
+vim.keymap.set('n', '<Leader><Leader>', vim.cmd.nohl, { noremap = true, silent = true })
+
+-- autocommands
+
+local help_group = vim.api.nvim_create_augroup("HelpInTab", { clear = true })
+
+vim.api.nvim_create_autocmd("FileType", {
+    group = help_group,
+    pattern = 'help',
+    callback = function()
+        vim.cmd("wincmd T")
+    end,
+    desc = "Open help files in a new tab"
+})
+
+local crosshair_group = vim.api.nvim_create_augroup("Crosshairs", { clear = true })
+
+vim.api.nvim_create_autocmd("InsertEnter", {
+    group = crosshair_group,
+    pattern = '*',
+    callback = function()
+        vim.opt.cursorline = false
+        vim.opt.cursorcolumn = false
+    end,
+    desc = "Disable crosshairs in insert mode"
+})
+vim.api.nvim_create_autocmd("InsertLeave", {
+    group = crosshair_group,
+    pattern = '*',
+    callback = function()
+        vim.opt.cursorline = true
+        vim.opt.cursorcolumn = true
+    end,
+    desc = "Enable crosshairs except in insert mode"
+})
+
+local pandoc_group = vim.api.nvim_create_augroup("PandocOpts", { clear = true })
+
+vim.api.nvim_create_autocmd("FileType", {
+    group = pandoc_group,
+    callback = function()
+        in_f = vim.fn.expand('%')
+        out_f = vim.fn.expand('%:r') .. '.pdf'
+        vim.opt.makeprg = 'pdflatex ' .. in_f
+
+        if vim.fn.has('win32') or vim.fn.has('win64') then
+            if utils.has_binary('sioyek') then
+                vim.opt.makeprg = vim.opt.makeprg .. ' && sioyek ' .. out_f
+            elseif vim.opt.shell:get() == 'cmd' then
+                vim.opt.makeprg = vim.opt.makeprg .. ' && start.exe ' .. out_f
+            elseif vim.opt.shell:get() == 'pwsh' then
+                vim.opt.makeprg = string.format('(%s) -and (Invoke-Item %s)',
+                                                vim.opt.makeprg,
+                                                out_f)
+            end
+        elseif vim.fn.has('mac') then
+            vim.opt.makeprg = vim.opt.makeprg .. ' && open ' .. out_f
+        end
+    end
+    })
+
+vim.g.netrw_liststyle = 3
+
+vim.keymap.set('n', '<Leader><Leader>', vim.cmd.nohl, { noremap = true, silent = true })
+
+-- make fuzzy finding work as expected
+vim.opt.completeopt = 'fuzzy,menuone,longest,preview'
+vim.cmd([[inoremap <silent><expr> <Tab> pumvisible() ? "\<C-y>" : "\<Tab>"]])
+vim.cmd([[inoremap <silent><expr> J pumvisible() ? "\<C-n>" : "J"]])
+vim.cmd([[inoremap <silent><expr> K pumvisible() ? "\<C-p>" : "K"]])
+vim.cmd([[inoremap <silent><expr> <esc> pumvisible() ? "\<C-e>" : "\<esc>"]])
+vim.cmd([[inoremap <silent> ;; <C-x><C-o>]])
+vim.cmd([[inoremap <silent><expr> ;f FZF()]])
+
