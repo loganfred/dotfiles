@@ -1,5 +1,4 @@
 local M = {}
-
 local home_bedroom_arch_desktop = 'MILDRED'
 local home_bedroom_win_desktop = nil
 local home_workbench_win_desktop = nil
@@ -40,6 +39,10 @@ function M.check_env_var(var_name, description)
       vim.api.nvim_err_writeln(error_msg)
       error(error_msg)
     end
+end
+
+function M.has_binary(name)
+  return vim.fn.executable(name) == 1
 end
 
 return M
