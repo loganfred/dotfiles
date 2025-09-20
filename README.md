@@ -9,6 +9,9 @@ I do contract work and clients often want me to use their equipment, so my goal 
 
 - `.vimrc` (deprecated)
 - `nvim/`
+- `ghostty/`
+- `qutebrowser/`
+- `suckless/`
 
 ### current approach:
 
