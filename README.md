@@ -1,30 +1,47 @@
 dotfiles
---------
+========
 
-This repo contains my configuration dotfiles. I may also add general new computer provisioning checklists and scripts.
+I used to heavily customize all my computers with the same operating system, tools, custom scripts, and configurations, but over the years my opinions have softened. This could be personal growth or that my industry requires each software tool to be approved, so you learn to pick your battles and to get creative.
 
-I do contract work and clients often want me to use their equipment, so my goal here is to contain everything I need to get 80% comfy with a new Windows, Linux, or MacOS machine in 90 minutes or less.
+I like working with volatile startups and I have my own consulting business, so I do similar work on more unique machines than most people I know.
 
-### current contents:
+I don't know what operating system I'll be asked to use next or what tools will be available to me, so these dotfiles are a superset of configuration files with a heavy emphasis on manual provisioning checklists.
 
-- `.vimrc` (deprecated)
-- `nvim/`
-- `ghostty/`
-- `qutebrowser/`
-- `suckless/`
+ingredients
+-----------
 
-### current approach:
+I use the following specific tools:
 
-I spend a lot of time in Vim/NeoVim. I don't feel compelled to do _everything_ in it, but it is definitely my base-camp.
+- neovim
+- pandoc
 
-At home I use the `vimwiki` and `vim-zettel` plugins to organize the inputs and outputs of my digital life.
+And multiple options will work for the rest:
 
-At work I use a more brutalist system that revolves around creating a batch of text files for each new gig.
+- terminal emulator
+- keyboard-focused browser
+- keyboard-focused window manager
+- PDF viewer
+- document converter
+- version control system
+- application launcher
+- keyboard remapper / hotkey tool
 
-Key principles:
 
-1. no personal files on work computers
-2. clear separation of confidential and non-confidential files
-3. all configuration lives in one place that is easy to back-up
-4. it should be quick to move most text to and from vim
-5. hotkeys should be the same or similar regardless of OS
+provisioning approach
+---------------------
+
+I have found these five principles to be the helpful when setting up any new system:
+
+1. create obvious boundaries betweek work and personal data, public and private data
+2. make backups easy even at the expense of restoring from them
+3. routine things should be effortless
+4. leave breadcrumbs to resume
+5. searchability is critical
+
+These principles transcend any specific implementation, but here are some notes on my current approach for work systems.
+
+First, I create one master folder and sync it with OneDrive or whatever. Backups done. I add explicit sub-folders for `personal/` and `work/` data and within those ones for `public/` and `private/` data. I tie this folder in with the system using symlinks and config sourcing, which is annoying, but it is well worth the price of how convenient it makes file backups and that I can port any backup to a new operating system.
+
+This is a good example of how I proritize making routine things effortless even if less common things are more awkward. This extends to hotkeys and scripts and pausing and resuming projects. I work on all kinds of things, so I have gotten in the habit of leaving detailed `README.md` files everywhere so it is easier to leave and come back even after months.
+
+I do almost all my computer work in a source code / compiled output paradigm for searchability. I do my documents in `markdown` or `typst` and use `pandoc` to make them into usual office documents. If people share things with me, I convert those too. I will never understand why search indexing on most computers is so terrible, so I design around that problem. And, if everything is plaintext, then everything works great with `vim` or `neovim`.

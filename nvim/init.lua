@@ -129,7 +129,7 @@ end
 
 
 vim.g.mapleader = '\\'
-vim.cmd([[colorscheme retrobox]])
+vim.cmd([[colorscheme elflord]])
 
 vim.opt.statusline = 'Editing: %f %y %M'
 vim.opt.incsearch = true
@@ -172,6 +172,7 @@ vim.api.nvim_create_autocmd("InsertLeave", {
 
 local pandoc_group = vim.api.nvim_create_augroup("PandocOpts", { clear = true })
 
+--[[
 vim.api.nvim_create_autocmd("FileType", {
     group = pandoc_group,
     callback = function()
@@ -194,6 +195,7 @@ vim.api.nvim_create_autocmd("FileType", {
         end
     end
     })
+--]]
 
 vim.g.netrw_liststyle = 3
 
