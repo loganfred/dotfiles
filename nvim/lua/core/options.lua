@@ -10,6 +10,7 @@ if vim.loop.os_uname().sysname == "Windows_NT" then
     ]])
 end
 
+vim.foldlevelstart = 999
 vim.opt.number = true
 vim.opt.splitbelow = true
 vim.opt.linebreak = true

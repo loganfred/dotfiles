@@ -25,7 +25,10 @@ return {
 		-- C-k: Toggle signature help (if signature.enabled = true)
 		--
 		-- See :h blink-cmp-config-keymap for defining your own keymap
-		keymap = { preset = "default" },
+		enabled = function()
+			return not vim.tbl_contains({ "lua", "markdown", "pandoc" }, vim.bo.filetype)
+		end,
+		keymap = { preset = "super-tab" },
 
 		appearance = {
 			-- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
