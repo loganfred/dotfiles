@@ -65,4 +65,4 @@ vim.api.nvim_set_keymap("n", "<C-l>", [[<Cmd>lua require"fzf-lua".live_grep()<CR
 vim.api.nvim_set_keymap("n", "<C-g>", [[<Cmd>lua require"fzf-lua".grep_project()<CR>]], {})
 vim.api.nvim_set_keymap("n", "<F1>", [[<Cmd>lua require"fzf-lua".help_tags()<CR>]], {})
 
-vim.api.nvim_set_keymap("n", "<F12>", [[<Cmd>lua require"fzf-lua".files({ cwd = '~/.config' })<CR>]], {})
+vim.api.nvim_set_keymap("n", "<F12>", [[<Cmd>lua require"fzf-lua".files({ cwd = vim.fn.stdpath("config") })<CR>]], {})
