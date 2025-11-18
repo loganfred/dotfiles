@@ -1,5 +1,6 @@
-function prompt {
-        <#
+function prompt
+{
+    <#
         Prompt Goals:
         - add sioyek to PATH
         - add nonproduct (scripts) folder to PATH
@@ -8,30 +9,40 @@ function prompt {
         Eventually it would be nice to have colored output, but handling differs between PS versions
         #>
 
-        # guard against repeat inclusion for subprocesses
-        if ($env:PATH -notmatch 'Sioyek') { $env:Path += ';C:\Program Files\Sioyek' }
-        if ($env:PATH -notmatch 'professional\\nonproduct\\scripts') {$env:Path += ';C:\Users\logan.frederick\Source\professional\nonproduct'}
-        if ($env:PATH -notmatch 'personal\\nonproduct\\scripts') {$env:Path += ';C:\Users\logan.frederick\Source\personal\nonproduct'}
+    # guard against repeat inclusion for subprocesses
+    if ($env:PATH -notmatch 'Sioyek')
+    { $env:Path += ';C:\Program Files\Sioyek' 
+    }
+    if ($env:PATH -notmatch 'professional\nonproduct\\scripts')
+    {$env:Path += ';C:\Users\logan.frederick\Source\professional\nonproduct\scripts'
+    }
+    if ($env:PATH -notmatch 'personal\nonproduct\\scripts')
+    {$env:Path += ';C:\Users\logan.frederick\Source\personal\nonproduct\scripts'
+    }
+    if ($env:PATH -notmatch 'qutebrowser')
+    {$env:Path += ';C:\Users\logan.frederick\AppData\Local\Programs\qutebrowser\'
+    }
 
-        $major = $PSVersionTable.PSVersion.Major
-        $minor = $PSVersionTable.PSVersion.Minor
-        $version = "$major.$minor"
+    $major = $PSVersionTable.PSVersion.Major
+    $minor = $PSVersionTable.PSVersion.Minor
+    $version = "$major.$minor"
 
-        $path = (Get-Location).Path
+    $path = (Get-Location).Path
 
-        $vhome = Join-Path $HOME 'OneDrive - Veranex'
+    $vhome = Join-Path $HOME 'OneDrive - Veranex'
 
-        if ($path.StartsWith($vhome)) {
-                $formatted = '$VHOME' + $path.Substring($vhome.Length)
-        }
-        elseif ($path.StartsWith($HOME)) {
-                $formatted = '$HOME' + $path.Substring($HOME.Length)
-        }
-        else {
-                $formatted = $path
-        }
+    if ($path.StartsWith($vhome))
+    {
+        $formatted = '$VHOME' + $path.Substring($vhome.Length)
+    } elseif ($path.StartsWith($HOME))
+    {
+        $formatted = '$HOME' + $path.Substring($HOME.Length)
+    } else
+    {
+        $formatted = $path
+    }
 
-        return "$formatted PS $version> "
+    return "$formatted PS $version> "
 }
 
 $env:EDITOR = 'nvim'
@@ -46,7 +57,8 @@ Set-PSReadlineoption -EditMode Vi
 $env:GLAZEWM_CONFIG_PATH = "C:\Users\logan.frederick\Source\personal\gh_dotfiles\glazeWM\config.yaml"
 
 # This clever command from SO echoes "CMD" or the PS Version
-function which_shell_am_i_trick {
+function which_shell_am_i_trick
+{
     (dir 2>&1 *`|echo CMD);&<# rem #>echo ($PSVersionTable).PSEdition
 }
 
@@ -56,34 +68,38 @@ Set the `FZF_DEFAULT_COMMAND` and `FZF_DEFAULT_OPTS` env vars so that
 function and selection with `enter` will spawn a subprocess with that
 path and open nvim if it is a file.
 #>
-function fzf_default {
+function fzf_default
+{
     $(gci -Recurse C:\Users\logan.frederick\Source\professional\projects\ -Depth 2; `
-      gci -Recurse C:\Users\logan.frederick\Source\personal\ -Depth 1 ; `
-      gci -Recurse C:\Users\logan.frederick\Source\professional\ -Exclude projects) | `
-      Sort-Object -Property LastWriteTime -Descending | `
-      % { "$($_.LastWriteTime)`t$(if (Test-Path -Path $_.FullName -PathType Container) {'D'} else {'F'})`t$($_.FullName)" }
+            gci -Recurse C:\Users\logan.frederick\Source\personal\ -Depth 1 ; `
+            gci -Recurse C:\Users\logan.frederick\Source\professional\ -Exclude projects) | `
+            Sort-Object -Property LastWriteTime -Descending | `
+            % { "$($_.LastWriteTime)`t$(if (Test-Path -Path $_.FullName -PathType Container) {'D'} else {'F'})`t$($_.FullName)" }
 }
 
-function change_directory {
+function change_directory
+{
     Param([String]$s)
 
     $s = $s -replace '^',''
 
 
-    if (Test-Path -Path $s -PathType Container) {
+    if (Test-Path -Path $s -PathType Container)
+    {
         Set-Location $s
-    }
-    else {
+    } else
+    {
         Set-Location $(Split-Path -Path $s -Parent)
         $ext = (Get-Item $s).Extension
 
-        if ($ext -eq '.pdf') {
+        if ($ext -eq '.pdf')
+        {
             sioyek.exe $s
-        }
-        elseif ($ext -in @('.docx', '.doc', '.csv', '.xls', '.xlsx', '.ppt', '.pptx')) {
+        } elseif ($ext -in @('.docx', '.doc', '.csv', '.xls', '.xlsx', '.ppt', '.pptx'))
+        {
             Invoke-Item $s
-        }
-        else {
+        } else
+        {
             nvim $s
         }
     }
