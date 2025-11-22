@@ -50,12 +50,12 @@ local function create_wiki_configs()
 		ext = ".md",
 	}
 
-	local books = {
-		name = "books",
-		path = utils.build_path("VIMWIKI_PATH", "books"),
-		path_html = utils.build_path("VIMWIKI_PATH", "html/public/books"),
-		template_path = utils.build_path("VIMWIKI_PATH", "books/templates"),
-		template_default = "books",
+	local content = {
+		name = "content",
+		path = utils.build_path("VIMWIKI_PATH", "content"),
+		path_html = utils.build_path("VIMWIKI_PATH", "html/public/content"),
+		template_path = utils.build_path("VIMWIKI_PATH", "content/templates"),
+		template_default = "content",
 		template_ext = "html",
 		-- custom_wiki2html = '~/source/blog/convert.py',
 		links_space_char = "_",
@@ -76,7 +76,7 @@ local function create_wiki_configs()
 		ext = ".md",
 	}
 
-	return { main, zettelkasten, writings, books, recipes }
+	return { main, zettelkasten, writings, content, recipes }
 end
 
 -- Set up vimwiki global options
