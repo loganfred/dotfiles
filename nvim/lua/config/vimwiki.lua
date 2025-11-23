@@ -126,6 +126,150 @@ local function setup_zettel_globals()
 	vim.g.zettel_format = "%y%m%d-%H%M-%title"
 	vim.g.zettel_date_format = "%Y-%m-%d %H:%M"
 	vim.g.zettel_default_title = "untitled"
+	vim.g.zettel_fzf_options = {
+		"--exact",
+		"--tiebreak=end",
+		"--preview-window=right:50%:wrap:~1", -- Larger preview, hide first line
+		"--delimiter=:",
+		"--with-nth=1,3..", -- Show filename and content, skip line numbers
+		"--info=inline",
+		"--layout=reverse",
+		"--border=rounded",
+	}
+end
+
+-- Set up search for all wikis
+local function setup_all_wiki_zk_search()
+	-- Create a custom command to search across all wikis with wiki-prefixed markdown links
+	vim.api.nvim_create_user_command("ZettelSearchAll", function()
+		local all_paths = {}
+		local wiki_map = {} -- Map paths to wiki names
+
+		for i, wiki in ipairs(vim.g.vimwiki_list) do
+			-- Expand ~ and make absolute
+			local expanded_path = vim.fn.fnamemodify(wiki.path, ":p")
+			-- Remove trailing slash for consistency
+			expanded_path = expanded_path:gsub("/$", "")
+
+			table.insert(all_paths, expanded_path)
+			wiki_map[expanded_path] = {
+				name = wiki.name,
+				index = i - 1, -- 0-indexed
+			}
+		end
+
+		-- Build rg command to search all wiki paths
+		local search_paths = table.concat(all_paths, " ")
+		local fzf_command =
+			string.format("rg --column --line-number --no-heading --color=always --smart-case . %s", search_paths)
+
+		-- Custom sink function to insert wiki-prefixed markdown link
+		local function insert_link(selected)
+			-- Handle different input types from FZF
+			local line
+			if type(selected) == "string" then
+				line = selected
+			elseif type(selected) == "table" and #selected > 0 then
+				line = selected[1]
+			else
+				vim.notify("No selection", vim.log.levels.WARN)
+				return
+			end
+
+			if not line or line == "" then
+				return
+			end
+
+			-- Parse: filename:line:col:content
+			local filepath = line:match("^([^:]+)")
+
+			if not filepath then
+				vim.notify("Could not parse filepath from: " .. line, vim.log.levels.ERROR)
+				return
+			end
+
+			-- Expand to absolute path and normalize
+			filepath = vim.fn.fnamemodify(filepath, ":p")
+			filepath = filepath:gsub("/$", "")
+
+			-- Determine which wiki this file belongs to
+			local wiki_name = nil
+			local wiki_idx = nil
+			local rel_path = nil
+
+			for path, info in pairs(wiki_map) do
+				if filepath:sub(1, #path) == path then
+					wiki_name = info.name
+					wiki_idx = info.index
+					rel_path = filepath:sub(#path + 2) -- +2 to skip path and /
+					rel_path = rel_path:gsub("%.md$", "") -- Remove .md extension
+					break
+				end
+			end
+
+			if not wiki_name or not rel_path then
+				vim.notify("Could not determine wiki for: " .. filepath, vim.log.levels.ERROR)
+				return
+			end
+
+			-- Get the title from the file
+			local title_cmd =
+				string.format("grep -m 1 '^title:' %s 2>/dev/null | sed 's/^title: *//'", vim.fn.shellescape(filepath))
+			local title = vim.fn.system(title_cmd):gsub("\n", ""):gsub("^%s*(.-)%s*$", "%1")
+
+			-- If no title found, use filename
+			if title == "" then
+				title = vim.fn.fnamemodify(rel_path, ":t")
+			end
+
+			-- Create wiki-prefixed markdown link: [title](wikiN:rel_path)
+			local link = string.format("[%s](wiki%d:%s)", title, wiki_idx, rel_path)
+			-- Insert the link at cursor
+			local pos = vim.api.nvim_win_get_cursor(0)
+			local line_content = vim.api.nvim_get_current_line()
+			local new_line = line_content:sub(1, pos[2]) .. link .. line_content:sub(pos[2] + 1)
+			vim.api.nvim_set_current_line(new_line)
+
+			-- Move cursor after the inserted link
+			vim.api.nvim_win_set_cursor(0, { pos[1], pos[2] + #link })
+		end
+
+		vim.fn["fzf#run"](vim.fn["fzf#wrap"]({
+			source = fzf_command,
+			sink = insert_link,
+			options = {
+				"--ansi",
+				"--exact",
+				"--preview-window=down:50%:wrap",
+				"--header=📚 All Wikis Search (Ctrl-C to cancel)",
+				"--delimiter=:",
+				"--with-nth=1,3..",
+				"--preview",
+				"bat --color=always --style=numbers --line-range=:500 {1} 2>/dev/null || cat {1}",
+			},
+		}))
+	end, {})
+
+	-- Map it in zettelkasten for both insert and normal mode
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "vimwiki.markdown.pandoc",
+		callback = function()
+			if vim.b.vimwiki_wiki_nr == 1 then -- zettelkasten wiki
+				-- Override [[ in insert mode
+				vim.keymap.set("i", "[[", function()
+					vim.cmd("ZettelSearchAll")
+				end, { buffer = true, desc = "Search all wikis and insert link" })
+
+				-- Also provide normal mode mapping
+				vim.keymap.set(
+					"n",
+					"<leader>zsa",
+					"<Cmd>ZettelSearchAll<CR>",
+					{ buffer = true, desc = "Search all wikis" }
+				)
+			end
+		end,
+	})
 end
 
 -- Autocommand to update the 'modified' field on save
@@ -228,6 +372,7 @@ function M.setup()
 	setup_keymaps()
 	setup_link_handler()
 	setup_modified_autocmd()
+	setup_all_wiki_zk_search()
 end
 
 return M
