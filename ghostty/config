@@ -2,4 +2,4 @@ font-family = "JetBrainsMono NF"
 font-size = 24
 theme = "Deep"
 title = " "
-window-decoration = "none"
+# window-decoration = "none"
