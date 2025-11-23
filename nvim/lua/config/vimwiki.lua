@@ -110,22 +110,15 @@ local function setup_zettel_globals()
 		{},
 		{
 			front_matter = {
-				{ "id", get_zettel_id },
 				{ "title", "" },
-				{ "date", "" },
+				{ "created", "" },
+				{ "id", get_zettel_id },
 				{ "modified", "" },
 				{ "tags", "" },
 				{ "type", "note" },
 				{ "status", "draft" },
-				{ "author", "" },
-				{ "categories", "" },
-				{ "keywords", "" },
 				{ "summary", "" },
-				{ "related", "" },
-				{ "source", "" },
-				{ "context", "" },
-				{ "importance", "" },
-				{ "confidence", "" },
+				{ "keywords", "" },
 			},
 			template = vim.fn.expand("~/.config/nvim/zettel_template.tpl"),
 		},
@@ -133,6 +126,66 @@ local function setup_zettel_globals()
 	vim.g.zettel_format = "%y%m%d-%H%M-%title"
 	vim.g.zettel_date_format = "%Y-%m-%d %H:%M"
 	vim.g.zettel_default_title = "untitled"
+end
+
+-- Autocommand to update the 'modified' field on save
+local function setup_modified_autocmd()
+	vim.api.nvim_create_autocmd("BufWritePre", {
+		pattern = "*",
+		callback = function()
+			-- Wrap everything in pcall to catch errors
+			local ok, err = pcall(function()
+				-- Silent check: only proceed if vimwiki.markdown.pandoc
+				if vim.bo.filetype ~= "vimwiki.markdown.pandoc" then
+					return
+				end
+
+				local wiki_nr = vim.b.vimwiki_wiki_nr
+				if not wiki_nr then
+					error("No wiki_nr found in buffer")
+				end
+
+				-- Only process wiki #2 (index 1)
+				if wiki_nr ~= 1 then
+					return
+				end
+
+				local lines = vim.api.nvim_buf_get_lines(0, 0, 20, false)
+				local in_frontmatter = false
+				local modified_line = nil
+
+				for i, line in ipairs(lines) do
+					if line:match("^---$") then
+						if not in_frontmatter then
+							in_frontmatter = true
+						else
+							-- End of frontmatter
+							break
+						end
+					elseif in_frontmatter and line:match("^modified:") then
+						modified_line = i - 1
+						break
+					end
+				end
+
+				if modified_line then
+					local timestamp = vim.fn.strftime("%Y-%m-%d %H:%M")
+					vim.api.nvim_buf_set_lines(
+						0,
+						modified_line,
+						modified_line + 1,
+						false,
+						{ "modified: " .. timestamp }
+					)
+				end
+			end)
+
+			-- Only notify on error
+			if not ok then
+				vim.notify("Error updating modified field: " .. tostring(err), vim.log.levels.ERROR)
+			end
+		end,
+	})
 end
 
 -- Set up keymaps
@@ -174,6 +227,7 @@ function M.setup()
 	setup_zettel_globals()
 	setup_keymaps()
 	setup_link_handler()
+	setup_modified_autocmd()
 end
 
 return M
