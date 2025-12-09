@@ -7,10 +7,10 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-vim.api.nvim_create_autocmd({ "BufWritePre", "FileReadPost" }, {
-	pattern = { "*.cpp", "*.h", "*.c", "*.hpp", "*.py" },
-	callback = vim.diagnostic.setqflist,
-})
+--vim.api.nvim_create_autocmd({ "BufWritePre", "FileReadPost" }, {
+--	pattern = { "*.cpp", "*.h", "*.c", "*.hpp", "*.py" },
+--	callback = vim.diagnostic.setqflist,
+--})
 
 vim.api.nvim_create_autocmd("InsertEnter", {
 	pattern = "*",
