@@ -46,17 +46,23 @@ local function DotFiles(file)
 	return "~/Source/personal/gh_dotfiles/" .. file
 end
 
-SlickOpen("a", CompanyNotesFiles("acronyms.tsv"))
-SlickOpen("i", CompanyNotesFiles("master_control_trainings.md"))
-SlickOpen("p", PersonalNotesFiles("win_provisioning.md"))
-SlickOpen("q", CompanyNotesFiles("qms.tsv"))
-SlickOpen("s", "C:\\ProgramData\\sioyek")
-SlickOpen("g", DotFiles("glazeWM/config.yaml"))
-SlickOpen("z", DotFiles("glazeWM/config.yaml"))
-SlickOpen("v", DotFiles("nvim/init.lua"))
---SlickOpen('f', DotFiles('pwsh/Microsoft.PowerShell_profile.ps1'))
-SlickOpen("?", PersonalNotesFiles("howto.md"), true)
-SlickOpen("l", PersonalNotesFiles("links_and_learnings.md"), true)
+if utils.is_external_computer() then
+	SlickOpen("a", CompanyNotesFiles("acronyms.tsv"))
+	SlickOpen("i", CompanyNotesFiles("master_control_trainings.md"))
+	SlickOpen("p", PersonalNotesFiles("win_provisioning.md"))
+	SlickOpen("q", CompanyNotesFiles("qms.tsv"))
+	SlickOpen("s", "C:\\ProgramData\\sioyek")
+	SlickOpen("g", DotFiles("glazeWM/config.yaml"))
+	SlickOpen("z", DotFiles("glazeWM/config.yaml"))
+	SlickOpen("v", DotFiles("nvim/init.lua"))
+	--SlickOpen('f', DotFiles('pwsh/Microsoft.PowerShell_profile.ps1'))
+	SlickOpen("?", PersonalNotesFiles("howto.md"), true)
+	SlickOpen("l", PersonalNotesFiles("links_and_learnings.md"), true)
+else
+	SlickOpen("v", DotFiles("nvim/init.lua"))
+	SlickOpen("l", "~/vimwiki/zettelkasten/240212-1015-links.md", true)
+	SlickOpen("?", "~/vimwiki/zettelkasten/230401-1055-howto.md", true)
+end
 
 vim.api.nvim_set_keymap("n", "<C-\\>", [[<Cmd>lua require"fzf-lua".buffers()<CR>]], {})
 vim.api.nvim_set_keymap("n", "<C-k>", [[<Cmd>lua require"fzf-lua".builtin()<CR>]], {})
@@ -66,5 +72,9 @@ vim.api.nvim_set_keymap("n", "<C-g>", [[<Cmd>lua require"fzf-lua".grep_project()
 vim.api.nvim_set_keymap("n", "<F1>", [[<Cmd>lua require"fzf-lua".help_tags()<CR>]], {})
 
 vim.api.nvim_set_keymap("n", "<Leader>qf", [[<Cmd> lua vim.diagnostic.setqflist()<CR>]], {})
+
+vim.keymap.set({ "n", "v", "i" }, "<C-x><C-f>", function()
+	FzfLua.complete_path()
+end, { silent = true, desc = "Fuzzy complete path" })
 
 vim.api.nvim_set_keymap("n", "<F12>", [[<Cmd>lua require"fzf-lua".files({ cwd = vim.fn.stdpath("config") })<CR>]], {})
