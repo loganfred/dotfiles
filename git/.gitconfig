@@ -1,0 +1,15 @@
+[user]
+	email = loganfonline@gmail.com
+	name = Logan Frederick
+[merge]
+	tool = nvimdiff
+[mergetool "vimdiff"]
+	cmd = nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" \"$BASE\"
+[mergetool "nvimdiff"]
+	layout = LOCAL,BASE,REMOTE / MERGED
+[pull]
+	rebase = true
+[rebase]
+	autoStash = true
+[diff]
+	tool = nvimdiff
