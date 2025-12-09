@@ -1,0 +1,4 @@
+"st -e nvim + ~/vimwiki/zettelkasten/230401-1055-howto.md"
+    F11
+"st -e watch -n 2 dropbox-cli status"
+    F10
