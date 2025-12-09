@@ -1,47 +1,80 @@
 dotfiles
 ========
 
-I used to heavily customize all my computers with the same operating system, tools, custom scripts, and configurations, but over the years my opinions have softened. This could be personal growth or that my industry requires each software tool to be approved, so you learn to pick your battles and to get creative.
+This repository contains my configuration files and manual provisioning checklists.
 
-I like working with volatile startups and I have my own consulting business, so I do similar work on more unique machines than most people I know.
+As a consultant in a regulated industry, I don't have much control over which operating systems I will be asked to use or what development tools are permitted, so I have learned to pick my battles. I also need to get up to speed quickly.
 
-I don't know what operating system I'll be asked to use next or what tools will be available to me, so these dotfiles are a superset of configuration files with a heavy emphasis on manual provisioning checklists.
+The goal is to collect a superset of configurations for common tools and pair them with provisioning checklists so that I can get up and running on a new system in 90 minutes or less.
 
-ingredients
------------
+minimum acceptable environment
+------------------------------
 
-I use the following specific tools:
+I can't do my work without:
 
-- neovim
+- vim/neovim or IDE plugin
+- ability to remap capslock to escape
 - pandoc
+- shell scripting
 
-And multiple options will work for the rest:
+I prefer to have the following:
 
+- PDF viewer
 - terminal emulator
 - keyboard-focused browser
 - keyboard-focused window manager
-- PDF viewer
-- document converter
 - version control system
 - application launcher
 - keyboard remapper / hotkey tool
 
+Many tools are good enough, even if I would prefer a specific one.
 
-provisioning approach
----------------------
+overview of provisioning
+------------------------
 
-I have found these five principles to be the helpful when setting up any new system:
+After many employers and systems, I have settled on the following five principles for setting up and using a computer effectively:
 
-1. create obvious boundaries betweek work and personal data, public and private data
-2. make backups easy even at the expense of restoring from them
-3. routine things should be effortless
-4. leave breadcrumbs to resume
-5. searchability is critical
+### 1. create obvious boundaries betweek work and personal data, public and private data
 
-These principles transcend any specific implementation, but here are some notes on my current approach for work systems.
+I don't put work data on personal devices, but it is inevitable that personal data (like tax forms, bookmarks, and so on) ends up on work devices. I use explicit `work/` and `personal/` folders and within them `public/` and `private/` to make it clear which things could be on the internet (like my personal wiki or conference talks) and which things are personal-private or corporate intellectual property.
 
-First, I create one master folder and sync it with OneDrive or whatever. Backups done. I add explicit sub-folders for `personal/` and `work/` data and within those ones for `public/` and `private/` data. I tie this folder in with the system using symlinks and config sourcing, which is annoying, but it is well worth the price of how convenient it makes file backups and that I can port any backup to a new operating system.
+### 2. make backups easy even at the expense of restoring from them
 
-This is a good example of how I proritize making routine things effortless even if less common things are more awkward. This extends to hotkeys and scripts and pausing and resuming projects. I work on all kinds of things, so I have gotten in the habit of leaving detailed `README.md` files everywhere so it is easier to leave and come back even after months.
+I like to create one master folder that contains everything important so that backups are trivial. If files need to appear in specific places, like for configuration, I manually symlink them or source them. This is annoying, but it means my "backups" are painless and portable to other operating systems.
 
-I do almost all my computer work in a source code / compiled output paradigm for searchability. I do my documents in `markdown` or `typst` and use `pandoc` to make them into usual office documents. If people share things with me, I convert those too. I will never understand why search indexing on most computers is so terrible, so I design around that problem. And, if everything is plaintext, then everything works great with `vim` or `neovim`.
+### 3. routine tasks should be effortless
+
+I focus on writing scripts and macros when it adds daily value.
+
+### 4. leave breadcrumbs to resume
+
+The nature of my personal and work endeavors is that I never really know when a project will be on hold for months. I add `README.md` files everywhere to track daily state so that it is much easier to ramp on or off some project.
+
+### 5. discoverability is critical
+
+I go above and beyond to try and make my files as full-text searchable as possible so that I can `grep` around for what I'm looking for. This includes using tools like pandoc, LaTeX, or typst for searchable documents and presentations. I also try to make my file heirarchies human-usable.
+
+neovim configuration
+--------------------
+
+My neovim configuration is the most complex. Here are some notes documenting the "features" I have added.
+
+- a minimimal set of plugins managed with Lazy including:
+    - several classic tpope plugins
+    - several fzf plugins
+    - vim-wordy, for spotting weasel words and jargon
+    - vimwiki and vim-zettel for personal wiki
+    - blink, conform, and which-key
+    - mason and mason-lspconfig with LSPs for C/C++, CMake, Python
+- a custom "utils" plugin I'm working on to handle cross-platform concerns
+- a custom "provisioning" plugin I'm working on to check for common binaries like pandoc and fzf
+- a custom quick navigation plugin I'm working on to jump to common files I use
+    - how-to
+    - links and learnings
+    - vim configuration
+- an elaborate vimwiki and vimzettel configuration featuring:
+    - markdown syntax
+    - private, zettelkasten, writings, content reviews, and recipe wikis
+    - changes to the search behavior for inter-wiki links
+    - changes to the default zettelkasten template
+    - autocommand to auto-update the last-modified timestamp in zettelkasten notes
