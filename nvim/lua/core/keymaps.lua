@@ -78,3 +78,26 @@ vim.keymap.set({ "n", "v", "i" }, "<C-x><C-f>", function()
 end, { silent = true, desc = "Fuzzy complete path" })
 
 vim.api.nvim_set_keymap("n", "<F12>", [[<Cmd>lua require"fzf-lua".files({ cwd = vim.fn.stdpath("config") })<CR>]], {})
+
+-- implicit headers with ;;h
+vim.keymap.set("i", ";;h", function()
+	require("fzf-lua").fzf_exec(vim.fn["vimwiki#base#get_anchors"](vim.fn.expand("%:p"), "markdown"), {
+		complete = function(selected, _, line, col)
+			if not selected or not selected[1] then
+				return line, col
+			end
+			local anchor = selected[1]
+			local new = line:sub(1, col) .. "[" .. anchor .. "]" .. line:sub(col + 1)
+			return new, col + #anchor + 2
+		end,
+	})
+end)
+
+if vim.env.VIMWIKI_PATH then
+	vim.api.nvim_set_keymap(
+		"n",
+		"<F2>",
+		[[<Cmd>lua require"fzf-lua".files({ cwd = vim.env.VIMWIKI_PATH, cmd = "fd -e md || find . -name '*.md'" })<CR>]],
+		{}
+	)
+end
