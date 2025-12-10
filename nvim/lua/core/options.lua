@@ -10,7 +10,6 @@ if vim.loop.os_uname().sysname == "Windows_NT" then
     ]])
 end
 
-vim.foldlevelstart = 999
 vim.opt.number = true
 vim.opt.splitbelow = true
 vim.opt.linebreak = true
@@ -28,3 +27,11 @@ vim.opt.incsearch = true
 vim.opt.hlsearch = true
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldlevelstart = 99
+
+vim.cmd([[
+    let g:markdown_minlines = 500
+	let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+	let g:markdown_syntax_conceal = 0
+	let g:pandoc#syntax#conceal#use = 0
+    ]])
