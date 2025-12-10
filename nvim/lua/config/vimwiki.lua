@@ -222,8 +222,16 @@ local function setup_all_wiki_zk_search()
 				title = vim.fn.fnamemodify(rel_path, ":t")
 			end
 
-			-- Create wiki-prefixed markdown link: [title](wikiN:rel_path)
-			local link = string.format("[%s](wiki%d:%s)", title, wiki_idx, rel_path)
+			-- Create wiki-prefixed markdown link: [title](wikiN:rel_path) only if not currently the zk
+			--   (this makes it easier to search for specific headings)
+			local wiki_nr = vim.b.vimwiki_wiki_nr
+			local link = ""
+			if wiki_nr ~= wiki_idx then
+				link = string.format("[%s](wiki%d:%s)", title, wiki_idx, rel_path)
+			else
+				link = string.format("[%s](%s)", title, rel_path)
+			end
+
 			-- Insert the link at cursor
 			local pos = vim.api.nvim_win_get_cursor(0)
 			local line_content = vim.api.nvim_get_current_line()
