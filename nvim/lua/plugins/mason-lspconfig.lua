@@ -15,7 +15,7 @@ return {
 			"lua_ls",
 			"powershell_es",
 			"stylua",
-			"systemd_ls",
+			"systemd_lsp",
 			"tinymist",
 			--"yamlls",
 		},

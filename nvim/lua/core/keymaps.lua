@@ -1,3 +1,5 @@
+local utils = require("config.utils")
+
 vim.keymap.set("n", "<Leader><Leader>", vim.cmd.nohl, { noremap = true, silent = true })
 
 local function SlickOpen(key, filename, append)

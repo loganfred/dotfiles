@@ -42,4 +42,11 @@ function M.has_binary(name)
 	return vim.fn.executable(name) == 1
 end
 
+function M.is_windows()
+	local sysname = vim.loop.os_uname().sysname
+	local is_linux = sysname == "Linux"
+	local is_mac = sysname == "Mac"
+	return not (is_linux or is_mac)
+end
+
 return M
