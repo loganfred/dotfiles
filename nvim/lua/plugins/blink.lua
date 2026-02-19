@@ -26,7 +26,10 @@ return {
 		--
 		-- See :h blink-cmp-config-keymap for defining your own keymap
 		enabled = function()
-			return not vim.tbl_contains({ "lua", "markdown", "pandoc", "vimwiki.markdown.pandoc" }, vim.bo.filetype)
+			return not vim.tbl_contains(
+				{ "lua", "markdown", "pandoc", "vimwiki.markdown.pandoc", "typst" },
+				vim.bo.filetype
+			)
 		end,
 		keymap = { preset = "super-tab" },
 

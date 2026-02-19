@@ -74,6 +74,7 @@ vim.api.nvim_set_keymap("n", "<C-g>", [[<Cmd>lua require"fzf-lua".grep_project()
 vim.api.nvim_set_keymap("n", "<F1>", [[<Cmd>lua require"fzf-lua".help_tags()<CR>]], {})
 
 vim.api.nvim_set_keymap("n", "<Leader>qf", [[<Cmd> lua vim.diagnostic.setqflist()<CR>]], {})
+vim.api.nvim_set_keymap("n", "<Leader>qe", [[<Cmd> lua vim.diagnostic.open_float()<CR>]], {})
 
 vim.keymap.set({ "n", "v", "i" }, "<C-x><C-f>", function()
 	FzfLua.complete_path()
@@ -94,6 +95,10 @@ vim.keymap.set("i", ";;h", function()
 		end,
 	})
 end)
+
+vim.keymap.set("i", ";;d", function()
+	vim.api.nvim_put({ os.date("%c") }, "c", true, true)
+end, { desc = "Insert current date" })
 
 if vim.env.VIMWIKI_PATH then
 	vim.api.nvim_set_keymap(

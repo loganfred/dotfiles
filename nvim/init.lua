@@ -16,6 +16,9 @@ vim.cmd([[
     hi Title guifg=violet
 ]])
 
+-- plugin for testing files
+require("config.testtube")
+
 require("config.lazy")
 require("core.options")
 require("core.keymaps")
