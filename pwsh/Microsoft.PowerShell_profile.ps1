@@ -22,6 +22,9 @@ function prompt
     if ($env:PATH -notmatch 'qutebrowser')
     {$env:Path += ';C:\Users\logan.frederick\AppData\Local\Programs\qutebrowser\'
     }
+    if ($env:PATH -notmatch 'MikeFarah.yq')
+    {$env:Path += ';C:\Users\logan.frederick\AppData\Local\Microsoft\WinGet\Packages\MikeFarah.yq_Microsoft.Winget.Source_8wekyb3d8bbwe'
+    }
 
     $major = $PSVersionTable.PSVersion.Major
     $minor = $PSVersionTable.PSVersion.Minor
@@ -70,11 +73,15 @@ path and open nvim if it is a file.
 #>
 function fzf_default
 {
-    $(gci -Recurse C:\Users\logan.frederick\Source\professional\projects\ -Depth 2; `
-            gci -Recurse C:\Users\logan.frederick\Source\personal\ -Depth 1 ; `
-            gci -Recurse C:\Users\logan.frederick\Source\professional\ -Exclude projects) | `
+    $ErrorActionPreference = "Stop"
+    gci -Recurse C:\Users\logan.frederick\Source | ? { $_.FullName -notmatch '\.venv|dependency_track|CMakeFiles|\.git|\.idea|docs' } | `
             Sort-Object -Property LastWriteTime -Descending | `
             % { "$($_.LastWriteTime)`t$(if (Test-Path -Path $_.FullName -PathType Container) {'D'} else {'F'})`t$($_.FullName)" }
+}
+
+function fzfind
+{
+    powershell.exe -command "fzf_default | fzf.exe -d \t -n 3 --bind 'enter:become(powershell.exe -NoExit -Command change_directory {3})'"
 }
 
 function change_directory
@@ -83,11 +90,10 @@ function change_directory
 
     $s = $s -replace '^',''
 
-
     if (Test-Path -Path $s -PathType Container)
     {
         Set-Location $s
-    } else
+    } elseif (Test-Path -Path $s -PathType Leaf)
     {
         Set-Location $(Split-Path -Path $s -Parent)
         $ext = (Get-Item $s).Extension
@@ -102,8 +108,11 @@ function change_directory
         {
             nvim $s
         }
+    } else
+    {
+        $s
     }
 }
 
 $env:FZF_DEFAULT_COMMAND = "powershell.exe -command fzf_default"
-$env:FZF_DEFAULT_OPTS = "-d \t -n 3 --bind 'enter:become(powershell.exe -NoExit -Command change_directory {3})'"
+$env:FZF_DEFAULT_OPTS = ""
