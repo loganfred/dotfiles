@@ -29,7 +29,7 @@ local function create_wiki_configs()
 
 	local zettelkasten = {
 		name = "zettelkasten",
-		path = utils.build_path("VIMWIKI_PATH", "zettelkasten"),
+		path = utils.build_path("VIMWIKI_PATH", "public/zettelkasten"),
 		path_html = utils.build_path("VIMWIKI_PATH", "html/public/zettelkasten"),
 		template_path = utils.build_path("VIMWIKI_PATH", "zettelkasten/templates"),
 		template_default = "zettelkasten",
@@ -47,7 +47,7 @@ local function create_wiki_configs()
 
 	local writings = {
 		name = "writings",
-		path = utils.build_path("VIMWIKI_PATH", "writings"),
+		path = utils.build_path("VIMWIKI_PATH", "public/writings"),
 		path_html = utils.build_path("VIMWIKI_PATH", "html/public/writings"),
 		template_path = utils.build_path("VIMWIKI_PATH", "writings/templates"),
 		template_default = "article",
@@ -61,7 +61,7 @@ local function create_wiki_configs()
 
 	local content = {
 		name = "content",
-		path = utils.build_path("VIMWIKI_PATH", "content"),
+		path = utils.build_path("VIMWIKI_PATH", "public/content"),
 		path_html = utils.build_path("VIMWIKI_PATH", "html/public/content"),
 		template_path = utils.build_path("VIMWIKI_PATH", "content/templates"),
 		template_default = "content",
@@ -74,7 +74,7 @@ local function create_wiki_configs()
 
 	local recipes = {
 		name = "recipes",
-		path = utils.build_path("VIMWIKI_PATH", "recipes"),
+		path = utils.build_path("VIMWIKI_PATH", "public/recipes"),
 		path_html = utils.build_path("VIMWIKI_PATH", "html/public/recipes"),
 		template_path = utils.build_path("VIMWIKI_PATH", "recipes/templates"),
 		template_default = "recipes",

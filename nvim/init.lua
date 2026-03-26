@@ -5,7 +5,7 @@ vim.g.filetype_md = "pandoc"
 -- deprecated due to blink plugin
 -- vim.cmd([[:inoremap <Down> <C-R>=pumvisible() ? "\<lt>tab>" : "\<lt>Ctrl-y>"<CR>]])
 
-vim.cmd([[colorscheme elflord]])
+vim.cmd([[colorscheme vim]])
 vim.cmd([[
     hi Search guifg=black guibg=cyan
     hi CurSearch guifg=black guibg=magenta
