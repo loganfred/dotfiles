@@ -78,7 +78,7 @@ vim.api.nvim_set_keymap("n", "<Leader>qe", [[<Cmd> lua vim.diagnostic.open_float
 vim.api.nvim_set_keymap("n", "<Leader>qs", [[<Cmd> echo synIDattr(synID(line('.'), col('.'), 1), 'name')<CR>]], {})
 
 vim.keymap.set({ "n", "v", "i" }, "<C-x><C-f>", function()
-	FzfLua.complete_path()
+	FzfLua.complete_file({ cmd = "fd --type f --no-ignore" })
 end, { silent = true, desc = "Fuzzy complete path" })
 
 vim.api.nvim_set_keymap("n", "<F12>", [[<Cmd>lua require"fzf-lua".files({ cwd = vim.fn.stdpath("config") })<CR>]], {})
