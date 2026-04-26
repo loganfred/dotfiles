@@ -85,7 +85,33 @@ local function create_wiki_configs()
 		ext = ".md",
 	}
 
-	return { main, zettelkasten, writings, content, recipes }
+	local library = {
+		name = "recipes",
+		path = utils.build_path("VIMWIKI_PATH", "public/library"),
+		path_html = utils.build_path("VIMWIKI_PATH", "html/public/library"),
+		template_path = utils.build_path("VIMWIKI_PATH", "library/templates"),
+		template_default = "library",
+		template_ext = "html",
+		-- custom_wiki2html = '~/source/blog/convert.py',
+		links_space_char = "_",
+		syntax = "markdown",
+		ext = ".md",
+	}
+
+	local projects = {
+		name = "projects",
+		path = utils.build_path("VIMWIKI_PATH", "public/projects"),
+		path_html = utils.build_path("VIMWIKI_PATH", "html/public/projects"),
+		template_path = utils.build_path("VIMWIKI_PATH", "projects/templates"),
+		template_default = "projects",
+		template_ext = "html",
+		-- custom_wiki2html = '~/source/blog/convert.py',
+		links_space_char = "_",
+		syntax = "markdown",
+		ext = ".md",
+	}
+
+	return { main, zettelkasten, writings, content, recipes, library, projects }
 end
 
 -- Set up vimwiki global options
