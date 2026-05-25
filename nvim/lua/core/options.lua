@@ -29,9 +29,9 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldlevelstart = 99
 
-vim.cmd([[
-    let g:markdown_minlines = 500
-	let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
-	let g:markdown_syntax_conceal = 0
-	let g:pandoc#syntax#conceal#use = 0
-    ]])
+-- vim.cmd([[
+--     let g:markdown_minlines = 500
+-- 	let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+-- 	let g:markdown_syntax_conceal = 0
+-- 	let g:pandoc#syntax#conceal#use = 0
+--     ]])

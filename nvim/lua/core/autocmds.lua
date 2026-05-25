@@ -7,6 +7,21 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown.pandoc",
+	callback = function()
+		vim.b.blink_disabled = true
+	end,
+})
+
+vim.api.nvim_create_autocmd("BufReadPost", {
+	pattern = "*.md",
+	group = vim.api.nvim_create_augroup("md_pandoc", { clear = true }),
+	callback = function()
+		vim.bo.filetype = "markdown.pandoc"
+	end,
+})
+
 --vim.api.nvim_create_autocmd({ "BufWritePre", "FileReadPost" }, {
 --	pattern = { "*.cpp", "*.h", "*.c", "*.hpp", "*.py" },
 --	callback = vim.diagnostic.setqflist,

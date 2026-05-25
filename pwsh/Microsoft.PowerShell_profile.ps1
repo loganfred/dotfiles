@@ -9,22 +9,7 @@ function prompt
         Eventually it would be nice to have colored output, but handling differs between PS versions
         #>
 
-    # guard against repeat inclusion for subprocesses
-    if ($env:PATH -notmatch 'Sioyek')
-    { $env:Path += ';C:\Program Files\Sioyek' 
-    }
-    if ($env:PATH -notmatch 'professional\nonproduct\\scripts')
-    {$env:Path += ';C:\Users\logan.frederick\Source\professional\nonproduct\scripts'
-    }
-    if ($env:PATH -notmatch 'personal\nonproduct\\scripts')
-    {$env:Path += ';C:\Users\logan.frederick\Source\personal\nonproduct\scripts'
-    }
-    if ($env:PATH -notmatch 'qutebrowser')
-    {$env:Path += ';C:\Users\logan.frederick\AppData\Local\Programs\qutebrowser\'
-    }
-    if ($env:PATH -notmatch 'MikeFarah.yq')
-    {$env:Path += ';C:\Users\logan.frederick\AppData\Local\Microsoft\WinGet\Packages\MikeFarah.yq_Microsoft.Winget.Source_8wekyb3d8bbwe'
-    }
+
 
     $major = $PSVersionTable.PSVersion.Major
     $minor = $PSVersionTable.PSVersion.Minor
@@ -116,3 +101,21 @@ function change_directory
 
 $env:FZF_DEFAULT_COMMAND = "powershell.exe -command fzf_default"
 $env:FZF_DEFAULT_OPTS = ""
+
+function RepeatPathGuard
+{
+    param(
+        [string]$substrToCheck,
+        [string]$pathToAdd
+    )
+    if ($env:PATH -notlike "*$substrToCheck*")
+    { $env:Path += ";" + $pathToAdd;
+    }
+}# guard against repeat inclusion for subprocesses
+
+RepeatPathGuard 'Sioyek' 'C:\Program Files\Sioyek'
+RepeatPathGuard 'professional\nonproduct\scripts' 'C:\Users\logan.frederick\Source\professional\nonproduct\scripts'
+RepeatPathGuard 'personal\nonproduct\scripts' 'C:\Users\logan.frederick\Source\personal\nonproduct\scripts'
+RepeatPathGuard 'qutebrowser' 'C:\Users\logan.frederick\AppData\Local\Programs\qutebrowser\'
+RepeatPathGuard 'MikeFarah.yq' 'C:\Users\logan.frederick\AppData\Local\Microsoft\WinGet\Packages\MikeFarah.yq_Microsoft.Winget.Source_8wekyb3d8bbwe'
+RepeatPathGuard 'Python311\Scripts' 'C:\Users\logan.frederick\AppData\Local\Programs\Python\Python311\Scripts;C:\Users\logan.frederick\AppData\Local\Programs\Python\Python311'

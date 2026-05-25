@@ -1,9 +1,12 @@
+local lib = vim.api.nvim_get_runtime_file("", true)
+table.insert(lib, vim.fn.expand("~/.config/lua-ls/stubs"))
+
 vim.lsp.config("lua_ls", {
 	settings = {
 		Lua = {
 			workspace = {
 				-- Make the server aware of Neovim runtime files
-				library = vim.api.nvim_get_runtime_file("", true),
+				library = lib,
 				checkThirdParty = false, -- Disable checking of third-party libraries
 			},
 			diagnostics = {

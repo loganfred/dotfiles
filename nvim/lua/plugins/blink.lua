@@ -26,10 +26,7 @@ return {
 		--
 		-- See :h blink-cmp-config-keymap for defining your own keymap
 		enabled = function()
-			return not vim.tbl_contains(
-				{ "lua", "markdown", "pandoc", "vimwiki.markdown.pandoc", "typst" },
-				vim.bo.filetype
-			)
+			return not vim.b.blink_disabled
 		end,
 		keymap = { preset = "super-tab" },
 
@@ -46,6 +43,9 @@ return {
 		-- elsewhere in your config, without redefining it, due to `opts_extend`
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer" },
+			per_filetype = {
+				lua = { "lsp", "path" },
+			},
 		},
 
 		-- (Default) Rust fuzzy matcher for typo resistance and significantly better performance

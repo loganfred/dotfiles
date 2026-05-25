@@ -77,6 +77,8 @@ vim.api.nvim_set_keymap("n", "<Leader>qf", [[<Cmd> lua vim.diagnostic.setqflist(
 vim.api.nvim_set_keymap("n", "<Leader>qe", [[<Cmd> lua vim.diagnostic.open_float()<CR>]], {})
 vim.api.nvim_set_keymap("n", "<Leader>qs", [[<Cmd> echo synIDattr(synID(line('.'), col('.'), 1), 'name')<CR>]], {})
 
+vim.api.nvim_set_keymap("n", "]e", [[<Cmd> lua vim.diagnostic.goto_next()<CR>]], {})
+
 vim.keymap.set({ "n", "v", "i" }, "<C-x><C-f>", function()
 	FzfLua.complete_file({ cmd = "fd --type f --no-ignore" })
 end, { silent = true, desc = "Fuzzy complete path" })
@@ -109,3 +111,8 @@ if vim.env.VIMWIKI_PATH then
 		{}
 	)
 end
+
+vim.keymap.set("n", "<leader>ub", function()
+	vim.b.blink_disabled = not vim.b.blink_disabled
+	vim.notify("Blink " .. (vim.b.blink_disabled and "off" or "on"))
+end)

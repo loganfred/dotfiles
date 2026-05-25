@@ -1,18 +1,42 @@
 return {
-  "nvim-treesitter/nvim-treesitter",
-  opts = {
-    -- Ensure these parsers are installed or add your own
-    ensure_installed = { "c", "lua", "vim", "vimdoc", "yaml", "html", "json", "python", "powershell", "bash", "cpp" },
-    highlight = {
-      enable = true,
-      -- additional_vim_regex_highlighting = false,
-    },
-    indent = {
-      enable = true,
-    },
-    -- You can enable other features here, like folds
-    folds = { enable = true },
-  },
-  -- This ensures the parsers are installed when plugins are installed.
-  build = ":TSUpdate",
+	"nvim-treesitter/nvim-treesitter",
+	build = ":TSUpdate",
+	main = "nvim-treesitter.configs",
+	opts = {
+		-- https://github.com/nvim-treesitter/nvim-treesitter/blob/main/SUPPORTED_LANGUAGES.md
+		ensure_installed = {
+			"arduino",
+			"bibtex",
+			"bitbake",
+			"bash",
+			"c",
+			"cmake",
+			"cpp",
+			"css",
+			"csv",
+			"html",
+			"json",
+			"jq",
+			"kconfig",
+			-- "latex", -- throws warnings
+			"lua",
+			"markdown",
+			"markdown_inline",
+			"nginx",
+			"objdump",
+			"powershell",
+			"python",
+			"regex",
+			"toml",
+			"typst",
+			"udev",
+			"vim",
+			"vimdoc",
+			"yaml",
+			"zig",
+			-- "zsh", -- not installable
+		},
+		highlight = { enable = true },
+		indent = { enable = true },
+	},
 }
