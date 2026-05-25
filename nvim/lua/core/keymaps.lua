@@ -62,8 +62,8 @@ if utils.is_external_computer() then
 	SlickOpen("l", PersonalNotesFiles("links_and_learnings.md"), true)
 else
 	SlickOpen("v", DotFiles("nvim/init.lua"))
-	SlickOpen("l", "~/vimwiki/zettelkasten/240212-1015-links.md", true)
-	SlickOpen("?", "~/vimwiki/zettelkasten/230401-1055-howto.md", true)
+	SlickOpen("l", "~/vimwiki/public/zettelkasten/240212-1015-links.md", true)
+	SlickOpen("?", "~/vimwiki/public/zettelkasten/230401-1055-howto.md", true)
 end
 
 vim.api.nvim_set_keymap("n", "<C-\\>", [[<Cmd>lua require"fzf-lua".buffers()<CR>]], {})
