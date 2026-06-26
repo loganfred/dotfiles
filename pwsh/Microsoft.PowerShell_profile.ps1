@@ -119,3 +119,4 @@ RepeatPathGuard 'personal\nonproduct\scripts' 'C:\Users\logan.frederick\Source\p
 RepeatPathGuard 'qutebrowser' 'C:\Users\logan.frederick\AppData\Local\Programs\qutebrowser\'
 RepeatPathGuard 'MikeFarah.yq' 'C:\Users\logan.frederick\AppData\Local\Microsoft\WinGet\Packages\MikeFarah.yq_Microsoft.Winget.Source_8wekyb3d8bbwe'
 RepeatPathGuard 'Python311\Scripts' 'C:\Users\logan.frederick\AppData\Local\Programs\Python\Python311\Scripts;C:\Users\logan.frederick\AppData\Local\Programs\Python\Python311'
+RepeatPathGuard 'Wireshark' 'C:\Program Files\Wireshark'
