@@ -1,3 +1,5 @@
+vim.treesitter.language.register("markdown", "vimwiki") -- critical for avoiding some error messages
+
 vim.g.mapleader = "\\"
 -- vim.g.python3_host_prog = "~/.local/bin/pynvim-python.exe"
 vim.g.filetype_md = "pandoc"
