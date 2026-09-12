@@ -14,8 +14,8 @@ from qutebrowser.api import cmdutils
 c.fonts.default_size = '18pt'
 c.fonts.default_family = 'JetBrains Mono'
 c.fonts.statusbar = '18pt default_family'
-
-#c.editor.command = ['st', 'nvim', '{}']
+c.window.hide_decoration = True
+c.editor.command = ['ghostty', 'nvim', '{}']
 
 
 # [awesome-custom-search-engines](https://github.com/davzoku/awesome-custom-search-engines)
@@ -1281,7 +1281,7 @@ c.url.searchengines = {'DEFAULT': 'https://duckduckgo.com/?q={}',
 ## `{line0}`: Same as `{line}`, but starting from index 0. * `{column0}`:
 ## Same as `{column}`, but starting from index 0.
 ## Type: ShellCommand
-# c.editor.command = ['gvim', '-f', '{file}', '-c', 'normal {line}G{column0}l']
+c.editor.command = ['vim', '-f', '{file}', '-c', 'normal {line}G{column0}l']
 
 ## Encoding to use for the editor.
 ## Type: Encoding

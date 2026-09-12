@@ -6,5 +6,5 @@
 
 config_version: 2
 settings:
-  content.javascript.clipboard:
-    https://github.com: access-paste
+  window.hide_decoration:
+    global: true
