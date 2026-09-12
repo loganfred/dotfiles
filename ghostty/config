@@ -1,5 +1,6 @@
-font-family = "JetBrainsMono NF"
-font-size = 24
-theme = "Deep"
-title = " "
-# window-decoration = "none"
+font-family = "JetBrainsMono Nerd Font Mono"
+font-size = 18
+gtk-titlebar = false
+window-padding-y = 10
+theme = "Iceberg Dark"
+
