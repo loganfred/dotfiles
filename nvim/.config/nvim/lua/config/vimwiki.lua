@@ -86,7 +86,7 @@ local function create_wiki_configs()
 	}
 
 	local library = {
-		name = "recipes",
+		name = "library",
 		path = utils.build_path("VIMWIKI_PATH", "public/library"),
 		path_html = utils.build_path("VIMWIKI_PATH", "html/public/library"),
 		template_path = utils.build_path("VIMWIKI_PATH", "library/templates"),
